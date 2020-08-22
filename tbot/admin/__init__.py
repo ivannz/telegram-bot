@@ -2,13 +2,12 @@ from .parser import parser
 from ..control import access, timeout
 
 
-def handle_auth(update, context, *, command=None,
-                function=None, user_id=[]):
+def handle_auth(context, command=None, function=None, user_id=[]):
     if command == 'list':
-        update.message.reply_text(repr(access.show()))
+        return repr(access.show())
 
     elif command == 'show':
-        update.message.reply_text(repr(access.dir(function)))
+        return repr(access.dir(function))
 
     elif command == 'allow':
         for uid in user_id:
@@ -19,13 +18,12 @@ def handle_auth(update, context, *, command=None,
             access.deny(function, uid)
 
 
-def handle_timeout(update, context, *, command=None,
-                   function=None, user_id=[]):
+def handle_timeout(context, command=None, function=None, user_id=[]):
     if command == 'list':
-        update.message.reply_text(repr(timeout.show()))
+        return repr(timeout.show())
 
     elif command == 'show':
-        update.message.reply_text(repr(timeout.dir(function)))
+        return repr(timeout.dir(function))
 
     elif command == 'allow':
         for uid in user_id:
@@ -36,12 +34,20 @@ def handle_timeout(update, context, *, command=None,
             timeout.deny(function, uid)
 
 
-def handle_list(update, context, *, command=None,
-                function=None, user_id=[]):
-    pass
+def handle_list(context, command=None, function=None, user_id=[]):
+    return ""
 
 
 def handler(update, context):
+    def dispatch(service=None, **kwargs):
+        handler = {
+            'auth': handle_auth,
+            'list': handle_list,
+            'timeout': handle_timeout,
+        }.get(service)
+
+        return handler(context, **kwargs)
+
     result = parser.parse_args(context.args)
 
     if hasattr(result, "_message"):
@@ -49,14 +55,4 @@ def handler(update, context):
         return
 
     update.effective_message.reply_text(repr(vars(result)))
-    dispatch(update, context, **vars(result))
-
-
-def dispatch(update, context, command=None, subcommand=None, **kwargs):
-    handler = {
-        'auth': handle_auth,
-        'list': handle_list,
-        'timeout': handle_timeout,
-    }.get(command)
-
-    handler(update, context, command=subcommand, **kwargs)
+    update.effective_message.reply_text(dispatch(**vars(result)))

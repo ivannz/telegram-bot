@@ -27,7 +27,7 @@ parser = ArgumentParser(
            """of the counting shall be three. Four shalt thou not count, """
            """nor either count thou two, excepting that thou then proceed """
            """to three.""")
-subparsers = parser.add_subparsers(dest="command", required=True)
+subparsers = parser.add_subparsers(dest="service", required=True)
 
 
 # User information
@@ -39,7 +39,7 @@ subparser = subparsers.add_parser(
 subparser = subparsers.add_parser(
     "auth", help="Manage access rights.")
 
-subsubparsers = subparser.add_subparsers(dest='subcommand')
+subsubparsers = subparser.add_subparsers(dest='command')
 
 subsubparser = subsubparsers.add_parser(
     "allow", parents=[function, user_id], help="Authorize a new user.")
@@ -56,9 +56,9 @@ subsubparser = subsubparsers.add_parser(
 # Timeout management
 subparser = subparsers.add_parser(
     "timeout", aliases=["to"], help="Manage timeouts of the logged users.")
-# subparser.add_argument("subcommand", choices=["show", "allow", "deny"])
+# subparser.add_argument("command", choices=["show", "allow", "deny"])
 
-subsubparsers = subparser.add_subparsers(dest='subcommand', required=True)
+subsubparsers = subparser.add_subparsers(dest='command', required=True)
 
 subsubparser = subsubparsers.add_parser(
     "allow", parents=[function, user_id], help="Reset timeout for a user.")
