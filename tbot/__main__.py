@@ -16,6 +16,9 @@ from .control import access, timeout, logging
 # logger = logging.getLogger(__name__)
 
 
+# https://github.com/python-telegram-bot/python-telegram-bot/wiki/Storing-bot,-user-and-chat-related-data
+# https://github.com/python-telegram-bot/python-telegram-bot/wiki/Code-snippets#requesting-location-and-contact-from-user
+
 updater = Updater(os.environ.get('TOKEN') or open('.token').read().strip())
 
 
