@@ -1,6 +1,7 @@
 # no need for singleton as modules are imported only once
 class Singleton(type):
     """https://stackoverflow.com/a/6798042"""
+
     _instances = {}
 
     def __call__(cls, *args, **kwargs):

@@ -16,11 +16,11 @@ class TimeOutDecorator(BaseDecorator):
         self[function].pop(user_id, None)
 
     def deny(self, function, user_id):
-        self[function][user_id] = datetime.fromisoformat('5999-12-31 23:59:59')
+        self[function][user_id] = datetime.fromisoformat("5999-12-31 23:59:59")
 
     @wraps(timedelta)
-    def apply(self, *, ontimeout='ignore', **timeout):
-        assert ontimeout in ('ignore', 'refresh')
+    def apply(self, *, ontimeout="ignore", **timeout):
+        assert ontimeout in ("ignore", "refresh")
         timeout = timedelta(**timeout)
         if timeout.total_seconds() <= 0:
             raise TypeError(f"`timeout` must be positive. Got `{timeout}`.")
@@ -37,13 +37,14 @@ class TimeOutDecorator(BaseDecorator):
                 try:
                     if remaining.total_seconds() > 0:
                         raise TimeOutError(
-                            f'`{update.effective_user.username}` is timed '
-                            f'out for {remaining}.')
+                            f"`{update.effective_user.username}` is timed "
+                            f"out for {remaining}."
+                        )
 
                     return decorated(update, context, *args, **kwargs)
 
                 finally:
-                    if remaining.total_seconds() <= 0 or ontimeout == 'refresh':
+                    if remaining.total_seconds() <= 0 or ontimeout == "refresh":
                         timeouts[update.effective_user.id] = curr
 
             return _wrap

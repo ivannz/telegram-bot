@@ -19,13 +19,13 @@ class ArgumentParser(BaseArgumentParser):
         raise ArgumentError(None, message)
 
     def parse_known_args(self, args, namespace=None):
-        with io.StringIO() as stdout, io.StringIO() as stderr, \
-           redirect_stdout(stdout), redirect_stderr(stderr):
+        with io.StringIO() as stdout, io.StringIO() as stderr, redirect_stdout(
+            stdout
+        ), redirect_stderr(stderr):
             try:
                 # Redirect the stdout/stderr to string buffers
                 # with redirect_stdout(stdout), redirect_stderr(stderr):
-                return super().parse_known_args(
-                    args=args, namespace=namespace)
+                return super().parse_known_args(args=args, namespace=namespace)
 
             except SystemExit:
                 return Namespace(_message=stdout.getvalue()), []
@@ -33,5 +33,5 @@ class ArgumentParser(BaseArgumentParser):
     def parse_args(self, args=None, namespace=None):
         args, argv = self.parse_known_args(args, namespace)
         if argv:
-            raise ArgumentError(None, f'Unrecognized arguments {argv}')
+            raise ArgumentError(None, f"Unrecognized arguments {argv}")
         return args

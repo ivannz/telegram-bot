@@ -17,6 +17,7 @@ class AccessDecorator(BaseDecorator):
 
     def apply(self, *authorized):
         """Decorator for restricting function calls."""
+
         def _decorator(decorated):
             self._context.setdefault(decorated, set(authorized))
 
@@ -26,8 +27,7 @@ class AccessDecorator(BaseDecorator):
                 if update.effective_user.id not in authorized:
                     username = update.effective_user.username
                     function = decorated.__name__
-                    raise UnauthorizedError(
-                        f'`{username}` cannot use `{function}`')
+                    raise UnauthorizedError(f"`{username}` cannot use `{function}`")
 
                 return decorated(update, context, *args, **kwargs)
 

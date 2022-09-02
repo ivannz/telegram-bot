@@ -3,33 +3,33 @@ from ..control import access, timeout
 
 
 def handle_auth(context, command=None, function=None, user_id=[]):
-    if command == 'list':
+    if command == "list":
         return repr(access.show())
 
-    elif command == 'show':
+    elif command == "show":
         return repr(access.dir(function))
 
-    elif command == 'allow':
+    elif command == "allow":
         for uid in user_id:
             access.allow(function, uid)
 
-    elif command == 'deny':
+    elif command == "deny":
         for uid in user_id:
             access.deny(function, uid)
 
 
 def handle_timeout(context, command=None, function=None, user_id=[]):
-    if command == 'list':
+    if command == "list":
         return repr(timeout.show())
 
-    elif command == 'show':
+    elif command == "show":
         return repr(timeout.dir(function))
 
-    elif command == 'allow':
+    elif command == "allow":
         for uid in user_id:
             timeout.allow(function, uid)
 
-    elif command == 'deny':
+    elif command == "deny":
         for uid in user_id:
             timeout.deny(function, uid)
 
@@ -41,9 +41,9 @@ def handle_list(context, command=None, function=None, user_id=[]):
 def handler(update, context):
     def dispatch(service=None, **kwargs):
         handler = {
-            'auth': handle_auth,
-            'list': handle_list,
-            'timeout': handle_timeout,
+            "auth": handle_auth,
+            "list": handle_list,
+            "timeout": handle_timeout,
         }.get(service)
 
         return handler(context, **kwargs)
